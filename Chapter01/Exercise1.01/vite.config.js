@@ -1,5 +1,4 @@
 import { fileURLToPath, URL } from "url";
-
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 
@@ -14,5 +13,8 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "jsdom",
+  },
+  server: {
+    port: 3000, // Установка порта на 3000
   },
 });

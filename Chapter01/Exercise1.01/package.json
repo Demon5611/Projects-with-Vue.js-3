@@ -2,7 +2,7 @@
   "name": "exercise1-01",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev":"vite --port 3000",
     "build": "vite build",
     "test": "vitest",
     "coverage": "vitest run --coverage",

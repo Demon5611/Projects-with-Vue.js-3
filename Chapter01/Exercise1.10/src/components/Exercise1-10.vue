@@ -2,74 +2,69 @@
   <div>
     <h1>Vue Lifecycle hooks</h1>
     <ul>
-      <li v-for="(item, n) in list" :key="n">
+      <li v-for="item in list" :key="item">
         {{ item }}
-        <button @click="deleteItem(item)">Delete</button>
+        <button id="destroy" @click="destroy(item)">Destroy</button>
       </li>
     </ul>
 
-    <strong
-      >Add a new item in the list array and save while running localhost to
-      preview the destroy hooks</strong
-    >
+    <strong>Add a new item in the list array and save while running localhost to
+      preview the destroy hooks</strong>
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      list: [
-        "Apex Legends",
-        "A Plague Tale: Innocence",
-        "ART SQOOL",
-        "Baba Is You",
-        "Devil May Cry 5",
-        "The Division 2",
-        "Hypnospace Outlaw",
-        "Katana ZERO",
-      ],
-    };
-  },
-  methods: {
-    deleteItem(value) {
-      this.list = this.list.filter((item) => item !== value);
-    },
-  },
+<script setup>
+import { ref } from "vue";
+import { onBeforeMount, onMounted, onBeforeUpdate, onUpdated, onBeforeUnmount, onUnmounted } from "vue";
 
-  beforeCreate() {
-    alert("beforeCreate: data is static, thats it");
-  },
-  created() {
-    alert("created: data and events ready, but no DOM");
-  },
-  beforeMount() {
-    alert("beforeMount: $el not ready");
-  },
-  mounted() {
-    alert("mounted: DOM ready to use");
-  },
-  beforeUpdate() {
-    alert(
-      "beforeUpdate: we know an update is about to happen, and have the data"
-    );
-  },
-  updated() {
-    alert("updated: virtual DOM will update after you click OK");
-  },
-  beforeUnmount() {
-    alert("beforeDestroy: about to blow up this component");
-  },
-  unmounted() {
-    alert("destroyed: this component has been destroyed");
-  },
+onBeforeMount(() => {
+  alert("beforeCreate: data is static");
+});
+
+onMounted(() => {
+  alert("created: data is reactive");
+});
+
+onBeforeUpdate(() => {
+  alert("beforeUpdate: data is reactive");
+});
+
+onUpdated(() => {
+  alert("updated: data is reactive");
+});
+
+onBeforeUnmount(() => {
+  alert("beforeUnmount: data is reactive");
+});
+
+onUnmounted(() => {
+  alert("unmounted: data is reactive");
+});
+
+const list = ref([
+  'Apex Legends',
+  'A Plague Tale: Innocence',
+  'ART SQOOL',
+  'Baba Is You',
+  'Devil May Cry 5',
+  'The Division 2',
+  'Hypnospace Outlaw',
+  'Katana ZERO',
+  'testing unmounted hooks',
+]);
+
+const destroy = (item) => {
+  list.value = list.value.filter((i) => i !== item);
 };
+
+
 </script>
 
-<style scoped>
+<style lang="stylus">
 ul {
   padding-left: 0;
 }
+
 li {
   display: block;
   list-style: none;
@@ -86,4 +81,5 @@ button {
   text-transform: uppercase;
   text-decoration: none;
 }
+
 </style>

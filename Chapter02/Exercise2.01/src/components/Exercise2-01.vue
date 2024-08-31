@@ -1,25 +1,47 @@
 <template>
-  <div class="container">
-    <input v-model="firstName" placeholder="First name" />
-    <input v-model="lastName" placeholder="Last name" />
-    <h3 class="output">{{ fullName }}</h3>
+  <input type="text" v-model="firstName" placeholder="First Name"/>
+  <input type="text" v-model="lastName" placeholder="Last Name"/>
+  <h3>Full Name: {{ fullName }}</h3>
+  <div>
+    Adjusted Count: {{ myComputedDataProp }}
+    <button @click="increaceCount">Increace Count</button>
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      firstName: '',
-      lastName: '',
-    }
+<script setup>
+
+import { ref, computed, onMounted, watch} from 'vue';
+
+const firstName = ref('');
+const lastName = ref(0);
+const fullName = computed(() => {
+  return `${firstName.value} ${lastName.value}`;
+});
+// get set работают как работа с состоянием и обновляет его
+const count = ref(0);
+const myComputedDataProp = computed({
+  get: () => count.value,
+  set: (newCount) => {
+    count.value = newCount;
   },
-  computed: {
-    fullName() {
-      return `${this.firstName} ${this.lastName}`
-    },
-  },
+});
+
+function increaceCount() {
+  myComputedDataProp.value += 1;
+  
 }
+// Загрузка сохраненного значения из localStorage при монтировании
+onMounted(() => {
+  const saveCount = localStorage.getItem('count');
+  if (saveCount !== null) {
+    count.value= Number(saveCount);
+  }
+});
+// Сохранение значения в localStorage при изменении
+watch(count, (newValue) => {
+  localStorage.setItem('count', newValue);
+}, {inmediate: true});
+
 </script>
 
 <style>

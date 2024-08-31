@@ -1,14 +1,11 @@
 <template>
   <div class="container">
-    <h2>Shopping list</h2>
+    <h1> Shoping list </h1>
     <div class="user-input">
-      <input
-        placeholder="Press enter to add new item"
-        v-model="input"
-        @keyup.enter="addItem"
-        ref="input"
-      />
-      <button @click="addItem">Add item</button>
+      <input placeholder="Press enter to add new item" v-model="input" @keyup.enter="addItem" ref="inputElement" />
+      <button @click="addItem">
+        Add item
+      </button>
     </div>
 
     <ul v-if="shoppingList">
@@ -18,41 +15,38 @@
       </li>
     </ul>
     <br />
-    <button class="button--delete" @click="deleteAll()">Delete all</button>
+    <button class="button--delete" @click="deleteAll()">Delete All</button>
+
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      input: "",
-      shoppingList: [],
-    };
-  },
-  methods: {
-    addItem() {
-      // Don't allow adding to the list if empty
-      if (!this.input) return;
-      this.shoppingList.push(this.input);
-      // Clear the input after adding
-      this.input = "";
-      // Focus the input element again for quick typing!
-      this.$refs.input.focus();
-    },
-    deleteItem(i) {
-      if (i < 0 || i > this.shoppingList.length) return;
+<script setup>
+import { ref, onMounted } from "vue";
 
-      this.shoppingList = this.shoppingList.filter(
-        (item, index) => index !== i
-      );
-    },
-    deleteAll() {
-      this.shoppingList = [];
-    },
-  },
+const shoppingList = ref([]);
+const input = ref("");
+const inputElement = ref(null);
+
+
+const deleteAll = () => {
+  shoppingList.value = [];
 };
+
+
+const addItem = () => {
+  if (!input.value) return;
+  shoppingList.value.push(input.value);
+  input.value = "";
+};
+onMounted(() => {
+  inputElement.value.focus();
+});
+const deleteItem = (i) => {
+  shoppingList.value.splice(i, 1);
+}
+
 </script>
+
 
 <style>
 .container {
@@ -74,6 +68,7 @@ export default {
   display: flex;
   align-items: center;
   padding-bottom: 20px;
+
   input {
     width: 100%;
     padding: 10px 6px;
@@ -98,7 +93,7 @@ button {
   color: white;
   white-space: nowrap;
 
-  + button {
+  +button {
     margin-left: 10px;
   }
 }
@@ -123,7 +118,7 @@ ul {
   padding: 30px;
   border: 1px solid rgba(0, 0, 0, 0.25);
 
-  > li {
+  >li {
     color: $color-grey;
     margin-bottom: 4px;
   }

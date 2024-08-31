@@ -1,28 +1,23 @@
 <template>
-  <div>
-    <h1>{{ isUppercase ? title.toUpperCase() : title }}</h1>
-  </div>
+  <img :src="logo"/>
+  <div v-text="msg"></div>
+  <h1>{{ isUppercase ? title.toUpperCase() : title }}</h1>
+  <div v-if="count === 4">Four</div>
+  <div v-else-if="count === 6">Six</div>
+  <div v-else-if="count === 2">Two</div>
+  <div v-else>Others</div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      title: "My first component!",
-      isUppercase: false,
-    };
-  },
-};
+<script setup>
+import  logo from "../assets/logo.svg";
+const msg = "My message"
+const title = "My first component!";
+const isUppercase = true;
 </script>
-//<script setup>
-// const title ='My first component!';
-// const isUppercase = true;
-// </script>
+
 <style>
-h1 {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+img {
+  width: 100px;
+  height: auto;
 }
 </style>

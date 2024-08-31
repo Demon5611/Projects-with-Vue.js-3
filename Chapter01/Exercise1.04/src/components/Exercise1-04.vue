@@ -1,40 +1,37 @@
 <template>
-  <section>
-    <div class="form">
-      <label>
-        Name
-        <input type="text" v-model="name" />
-      </label>
-      <label>
-        Preferred javascript style
-        <select name="language" v-model="language">
-          <option value="Javascript">JavaScript</option>
-          <option value="TypeScript">TypeScript</option>
-          <option value="CoffeeScript">CoffeeScript</option>
-          <option value="Dart">Dart</option>
-        </select>
-      </label>
-    </div>
-    <ul class="overview">
-      <li><strong>Overview</strong></li>
-      <li>Name: {{ name }}</li>
-      <li>Preference: {{ language }}</li>
-    </ul>
-  </section>
+  <div class="form">
+    <label>
+      Name
+      <input type="text" v-model="name" />
+    </label>
+    <label>
+      Prefered JS Style
+      <select name="language" v-model="language">
+        <option value="JavaScript">JavaScript</option>
+        <option value="TypeScript">TypeScript</option>
+        <option value="CoffeeScript">CoffeeScript</option>
+        <option value="Python">Python</option>
+      </select>
+    </label>
+  </div>
+  <ul class="overview">
+    <li><strong>Overview</strong></li>
+    <li>Name:{{ name }}</li>
+    <li>Prefered:{{ language }}</li>
+  </ul>
+  <div v-for='n in 5' :key="`loop-2-${n}`">
+    {{ n }}
+
+  </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      name: "",
-      language: "",
-    };
-  },
-};
+<script setup>
+import { ref } from "vue";
+const name = ref("");
+const language = ref("");
 </script>
 
-<style>
+<style scoped>
 .form {
   display: flex;
   justify-content: space-evenly;
@@ -56,11 +53,11 @@ export default {
   border: 1px solid #ececec;
 }
 
-.overview > li {
+.overview>li {
   list-style: none;
 }
 
-.overview + li {
+.overview>li+li {
   margin-top: 20px;
 }
 </style>

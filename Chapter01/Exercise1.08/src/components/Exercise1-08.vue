@@ -1,22 +1,22 @@
 <template>
   <div>
     <h1>Triggering Vue Methods</h1>
-    <ul>
-      <li v-for="n in 5" :key="n">
-        <button @click="triggerAlert(n)">Trigger {{ n }}</button>
-      </li>
-    </ul>
+  <ul>
+    <li v-for="index in 5" :key='index'>
+      <button id="btn" @click="triger(index)">
+        Triger me {{ index }}
+      </button>
+    </li>
+  </ul>
   </div>
 </template>
 
-<script>
-export default {
-  methods: {
-    triggerAlert(n) {
-      alert(`${n} has been clicked`);
-    },
-  },
-};
+<script setup>
+
+const triger = (n) => {
+  alert(`${n} has been clicked`);
+}
+
 </script>
 
 <style scoped>
@@ -28,7 +28,7 @@ li {
   list-style: none;
 }
 
-li + li {
+li ~ li {
   margin-top: 10px;
 }
 

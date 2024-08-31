@@ -5,15 +5,11 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      title: "CSS module component!",
-      subtitle: "The fourth exercise",
-    };
-  },
-};
+<script setup>
+ 
+     const title = "CSS module component!";
+     const subtitle = "The fourth exercise";
+
 </script>
 
 <style module>

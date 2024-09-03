@@ -1,110 +1,110 @@
 <template>
   <div id="app">
-    <div v-if="name" class="author">
-      <h2>
-        {{ name }}
-      </h2>
-      <h3 v-if="title">{{ title }}</h3>
-      <p v-if="bio">{{ bio }}</p>
-    </div>
-    <div class="articles">
-      <hr />
-      <h2>Articles</h2>
-      <section v-if="posts" class="articles-list">
-        <article v-for="(post, i) in posts" :key="i">
-          <img
-            v-if="post.fields.heroImage"
-            class="thumbnail"
-            :src="`${post.fields.heroImage.fields.file.url}?fit=scale&w=350&h=196`"
-          />
-          <div class="article-text">
-            <div class="date">
-              {{ new Date(post.fields.publishDate).toDateString() }}
-            </div>
-            <h4>{{ post.fields.title }}</h4>
-            <p>{{ post.fields.description }}</p>
+    <div class="container">
+      <div class="header_author">
+        <h1>John Doe</h1>
+        <h2>Web Developer</h2>
+        <p>Research and recommendations for modern stack websites</p>
+      </div>
+      <div class="line"></div>
+      <h4>Photos from Pexels</h4>
+      <div class="photos-list">
+        <div
+          v-for="(photo, index) in photos.slice(0, 5)"
+          :key="index"
+          class="photo-card"
+        >
+          <img :src="photo.src.medium" :alt="photo.alt" class="thumbnail" />
+          <div class="photo-text">
+            <h5 class="title">Photographer: <a :href="photo.photographer_url" target="_blank">{{ photo.photographer  }}</a></h5>
+            <p><a :href="photo.url" target="_blank">View on Pexels</a></p>
           </div>
-        </article>
-      </section>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
-<script>
-import { createClient } from "contentful";
+<script setup>
+import { ref, onMounted } from "vue";
+import axios from "axios";
 
-const client = createClient({
-  space: "hpr0uushokd4",
-  accessToken: "jwEHepvQx-kMtO7_2ldjhE4WMAsiDp3t1xxBT8aDp7U",
-});
+const photos = ref([]);
 
-export default {
-  name: "app",
-  data() {
-    return {
-      authors: [],
-      posts: {},
-    };
-  },
-  computed: {
-    name() {
-      return this.authors[0] && this.authors[0].fields.name;
-    },
-    title() {
-      return this.authors[0] && this.authors[0].fields.title;
-    },
-    bio() {
-      return this.authors[0] && this.authors[0].fields.shortBio;
-    },
-  },
-  async created() {
-    this.authors = await this.getPeople();
-    this.posts = await this.getBlogPosts();
-  },
-  methods: {
-    async getPeople() {
-      const entries = await client.getEntries({ content_type: "person" });
-      return entries.items;
-    },
-    async getBlogPosts() {
-      const entries = await client.getEntries({
-        content_type: "blogPost",
-        order: "-fields.publishDate",
-      });
-      return entries.items;
-    },
-  },
-};
+
+async function getPhotos() {
+  try {
+    const response = await axios.get("https://api.pexels.com/v1/curated", {
+      headers: {
+        Authorization:
+          "Dq29owQzyAs5xqUOz0lxwW9wTAIyVSowx2zhFONzZHuAIBY2moWroDD5",
+      },
+      params: {
+        per_page: 5, // Количество фотографий на странице
+      },
+    });
+    console.log('response ==>', response);
+    photos.value = response.data.photos;
+  } catch (error) {
+    console.error("Error fetching:", error);
+  } 
+}
+
+onMounted(getPhotos);
 </script>
 
 <style>
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin: 60px auto 0;
+.container {
   max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-.articles-list > article {
+.header_author {
+  text-align: center;
+}
+
+.line {
+  border-bottom: 1px solid #ccc;
+  margin: 20px 0;
+}
+
+.photos-list {
   display: flex;
-  text-align: left;
-  padding-bottom: 15px;
+  flex-wrap: wrap;
+  gap: 15px;
 }
 
-.article-text {
-  padding: 15px 0;
+.photo-card {
+  width: calc(50% - 10px);
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
 .thumbnail {
-  margin-right: 30px;
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
 }
 
-.date {
-  font-size: 12px;
+.photo-text {
+  margin-top: 10px;
+}
+
+.title {
+  font-size: 16px;
   font-weight: bold;
-  text-transform: uppercase;
+}
+
+.photo-text a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.photo-text a:hover {
+  text-decoration: underline;
 }
 </style>

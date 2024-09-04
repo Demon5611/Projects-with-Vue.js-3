@@ -7,10 +7,10 @@
         <p>Research and recommendations for modern stack websites</p>
       </div>
       <div class="line"></div>
-      <h4>Photos from Pexels</h4>
+      <h5>(C)Photos from Pexels</h5>
       <div class="photos-list">
         <div
-          v-for="(photo, index) in photos.slice(0, 5)"
+          v-for="(photo, index) in photos.slice(0, 10)"
           :key="index"
           class="photo-card"
         >
@@ -40,7 +40,7 @@ async function getPhotos() {
           "Dq29owQzyAs5xqUOz0lxwW9wTAIyVSowx2zhFONzZHuAIBY2moWroDD5",
       },
       params: {
-        per_page: 5, // Количество фотографий на странице
+        per_page: 10, // Количество фотографий на странице
       },
     });
     console.log('response ==>', response);
@@ -58,6 +58,11 @@ onMounted(getPhotos);
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
+
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  gap: 10px;
 }
 
 .header_author {
@@ -76,17 +81,19 @@ onMounted(getPhotos);
 }
 
 .photo-card {
-  width: calc(50% - 10px);
+  flex: 1 1 calc(30% - 15px);
   background-color: #f9f9f9;
+  border: 1px solid #ddd;
   border-radius: 8px;
   padding: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  max-width: calc(50% - 15px); /* Ограничение ширины для двух колонок */
 }
 
 .thumbnail {
-  max-width: 100%;
-  height: auto;
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
   border-radius: 4px;
 }
 
@@ -95,8 +102,7 @@ onMounted(getPhotos);
 }
 
 .title {
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 18px; /* Увеличенный размер для лучшей читаемости */
 }
 
 .photo-text a {

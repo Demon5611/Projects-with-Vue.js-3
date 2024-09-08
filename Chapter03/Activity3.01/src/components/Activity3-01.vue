@@ -1,3 +1,5 @@
+<!-- Activity3-01.vue -->
+
 <template>
   <div class="container">
     <h1>Activity 3.01</h1>
@@ -6,33 +8,35 @@
         type="text" 
         placeholder="First name" 
         id="fname"
-        v-model= "fname" />
+        v-model="fname" />
       <input 
         type="text" 
         id="lname"
         placeholder="Last name" 
-        v-model= "lname" />
+        v-model="lname" />
     </div>
     <div>
       <p>Full name: {{ fullName }}</p>
+      <p>Counter: {{ counter }}</p>
+      <button @click="increment">Increment Counter</button>
     </div>
   </div>
 </template>
-<script>
-export default {
-  name: 'Activity3-01',
-  data() {
-    return {
-      fname: '',
-      lname: '',
-    }
-  },
-  computed: {
-    fullName() {
-      return `${this.fname} ${this.lname}`
-    },
-  },
-}
+
+
+<script setup>
+import { computed, ref } from 'vue';
+import { useCounterStore } from '../stores/counter.js';
+
+const fname = ref('');
+const lname = ref('');
+const fullName = computed(() => `${fname.value} ${lname.value}`);
+
+// Используем Pinia Store
+const counterStore = useCounterStore(); 
+const counter = computed(() => counterStore.counter); // counter берется из хранилища Pinia
+const increment = () => counterStore.increment(); // создаем функцию increment, которая вызывает метод increment из Pinia-хранилища (counterStore). Она не вызывает сама себя, а просто ссылается на метод increment внутри хранилища.
+
 </script>
 <style>
 .container {

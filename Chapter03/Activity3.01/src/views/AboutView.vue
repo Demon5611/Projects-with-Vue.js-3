@@ -1,15 +1,21 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <div>
+    <h1>About Page</h1>
+    <p>This is the about page where we talk about our application.</p>
   </div>
 </template>
 
-<style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
+<script setup>
+// Никаких дополнительных скриптов
+</script>
+
+<style scoped>
+h1 {
+  color: #42b983;
+}
+
+p {
+  font-size: 18px;
+  color: #666;
 }
 </style>
